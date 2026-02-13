@@ -400,7 +400,7 @@ function Hero({ onFormSubmit }) {
               <div className={styles.enquireForm} id="enquire-form">
                 <div className={styles.formHeader}>
                   <h3>{formTitle}</h3>
-                  <p>Get a callback from our expert</p>
+                  <p>India's best GENAI program.</p>
                 </div>
                 {isFormSubmitted ? (
                   <div className={styles.formBody} style={{ textAlign: 'center' }}>
@@ -575,7 +575,7 @@ function Hero({ onFormSubmit }) {
                       </div>
                     </div>
                     <div className={styles.checkboxGroup}>
-                      <input type="checkbox" id="agree" required />
+                      <input type="checkbox" id="agree" required defaultChecked />
                       <label htmlFor="agree">I agree to receive updates &amp; accept T&amp;C</label>
                     </div>
                     <button type="submit" className={styles.submitBtn} disabled={isSubmitting}>
