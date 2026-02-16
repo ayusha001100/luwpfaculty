@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { CheckCircle, ArrowRight, BookOpen, UserCheck, Calendar } from 'lucide-react';
+import { CheckCircle, ArrowRight, BookOpen, UserCheck, Calendar, MessageCircle } from 'lucide-react';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import Benefits from '../../components/Benefits';
@@ -45,6 +45,22 @@ export default function ThankYouPage() {
               <a href="https://pro.letsupgrade.in" target="_blank" rel="noopener noreferrer" className="contact-btn call-btn" style={{ textTransform: 'uppercase' }}>
                 ENROLL NOW FOR THE GEN AI FREE WORKSHOP OF 3 HR
               </a>
+            </div>
+
+            <div className="important-box">
+              <h3 className="important-title">Important</h3>
+              <p className="important-text">
+                The masterclass is conducted every Saturday and is designed specifically for working professionals looking to apply Generative AI in real-world scenarios.
+              </p>
+              <p className="important-text">
+                To receive important updates, session links, reminders, and workshop resources, please join the official WhatsApp group using the link below.
+              </p>
+              <a href="https://luc.to/workingprofessional" target="_blank" rel="noopener noreferrer" className="whatsapp-cta-btn">
+                <MessageCircle size={20} strokeWidth={2.5} /> Click Here →
+              </a>
+              <p className="important-footer">
+                We look forward to having you in the session.
+              </p>
             </div>
           </motion.div>
         </main>
@@ -175,27 +191,45 @@ export default function ThankYouPage() {
           font-family: var(--font-outfit);
           font-size: 2.2rem;
           color: var(--foreground);
-          margin-bottom: 40px;
+          margin-bottom: 20px;
           line-height: 1.3;
           font-weight: 600;
           text-align: center;
         }
 
+        .contact-description {
+          font-family: var(--font-inter);
+          font-size: 1.25rem;
+          color: var(--grey-text);
+          line-height: 1.6;
+          margin-bottom: 40px;
+          max-width: 800px;
+          margin-left: auto;
+          margin-right: auto;
+          font-weight: 500;
+        }
+
         .contact-buttons {
           display: flex;
+          flex-direction: column;
           gap: 20px;
+          align-items: center;
           justify-content: center;
-          flex-wrap: wrap;
+          margin-top: 40px;
         }
 
         .contact-btn {
           display: inline-flex;
           align-items: center;
+          justify-content: center;
+          text-align: center;
           gap: 12px;
-          padding: 16px 40px;
+          padding: 18px 48px;
           border-radius: 100px;
           font-weight: 700;
-          font-size: 1.05rem;
+          font-size: 1.1rem;
+          width: 100%;
+          max-width: 650px;
           transition: all 0.3s ease;
           text-decoration: none;
           box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
@@ -225,6 +259,72 @@ export default function ThankYouPage() {
 
         .contact-btn svg {
           flex-shrink: 0;
+        }
+
+        .important-box {
+          background: #FFF8E7;
+          border-radius: 16px;
+          padding: 40px 48px;
+          margin-top: 48px;
+          max-width: 800px;
+          margin-left: auto;
+          margin-right: auto;
+          text-align: center;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        .important-title {
+          font-family: var(--font-outfit);
+          font-size: 1.5rem;
+          font-weight: 700;
+          color: var(--foreground);
+          margin-bottom: 20px;
+          text-align: center;
+        }
+
+        .important-text {
+          font-family: var(--font-inter);
+          font-size: 1rem;
+          line-height: 1.7;
+          color: #333;
+          margin-bottom: 16px;
+          text-align: center;
+        }
+
+        .important-text strong {
+          font-weight: 700;
+          color: var(--foreground);
+        }
+
+        .whatsapp-cta-btn {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+          background: #FFC107;
+          color: #000;
+          padding: 12px 32px;
+          border-radius: 100px;
+          font-weight: 700;
+          font-size: 1rem;
+          margin: 24px auto 20px;
+          text-decoration: none;
+          transition: all 0.3s ease;
+          box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3);
+        }
+
+        .whatsapp-cta-btn:hover {
+          background: #FFB300;
+          transform: translateY(-2px);
+          box-shadow: 0 6px 20px rgba(255, 193, 7, 0.4);
+        }
+
+        .important-footer {
+          font-family: var(--font-inter);
+          font-size: 0.95rem;
+          color: #555;
+          margin-top: 16px;
+          text-align: center;
         }
 
         .subheading {
@@ -340,6 +440,20 @@ export default function ThankYouPage() {
           .contact-btn {
             width: 100%;
             justify-content: center;
+          }
+          .important-box {
+            padding: 32px 24px;
+            margin-top: 32px;
+          }
+          .important-title {
+            font-size: 1.3rem;
+          }
+          .important-text {
+            font-size: 0.95rem;
+          }
+          .whatsapp-cta-btn {
+            width: 100%;
+            max-width: 280px;
           }
         }
       `}</style>

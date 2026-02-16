@@ -18,6 +18,7 @@ const Frameworks = dynamic(() => import('../components/Frameworks'), { ssr: true
 const ToolsSection = dynamic(() => import('../components/ToolsSection'), { ssr: true });
 const Curriculum = dynamic(() => import('../components/Curriculum'), { ssr: true });
 const Mentor = dynamic(() => import('../components/Mentor'), { ssr: true });
+const SocialProof = dynamic(() => import('../components/SocialProof'), { ssr: true });
 const FAQ = dynamic(() => import('../components/FAQ'), { ssr: true });
 const Footer = dynamic(() => import('../components/Footer'), { ssr: true });
 const BottomCTA = dynamic(() => import('../components/BottomCTA'), { ssr: true });
@@ -101,6 +102,7 @@ export default function Home() {
       <ToolsSection />
       <Curriculum />
       <Mentor />
+      <SocialProof />
       <FAQ />
       <Footer />
       <BottomCTA isFormSubmitted={isFormSubmitted} />

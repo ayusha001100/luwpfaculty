@@ -1,145 +1,153 @@
 'use client';
 import { motion } from 'framer-motion';
 
-const brands = [
-  'Google', 'Amazon', 'Microsoft', 'Uber', 'TCS', 'Infosys', 'Wipro', 'Accenture'
+const row1Brands = [
+  { name: 'Infibeam Avenues', logo: '/logos/infibeam.svg' },
+  { name: 'HDFC Ergo', logo: '/logos/hdfc.svg' },
+  { name: 'Loginext', logo: '/logos/loginext.svg' },
+  { name: 'Invest India', logo: '/logos/investindia.png' },
+  { name: 'Accenture', logo: '/logos/accenture.png' },
+  { name: 'Chainlink', logo: '/logos/chainlink.svg' },
+  { name: 'IBM', logo: '/logos/ibm.svg' },
+];
+
+const row2Brands = [
+  { name: 'PwC', logo: '/logos/pwc.svg' },
+  { name: 'Worxogo', logo: '/logos/worxogo.svg' },
+  { name: 'Volvo', logo: '/logos/volvo.svg' },
+  { name: 'Ola', logo: '/logos/ola.svg' },
+  { name: 'Dell', logo: 'https://upload.wikimedia.org/wikipedia/commons/8/82/Dell_Logo.png' },
+  { name: 'Intellecap', logo: '/logos/intellecap.svg' },
+  { name: 'Microsoft', logo: '/logos/microsoft.svg' },
+  { name: 'Axis Bank', logo: '/logos/axisbank.svg' },
 ];
 
 export default function SocialProof() {
   return (
     <section className="social-proof-section">
       <div className="container">
-        <div className="stats-container">
-          <p className="stats-text"><span className="text-orange">10M+</span> Learners Upgraded Their Careers</p>
-          <div className="avatar-group">
-            {[1, 2, 3, 4, 5, 6].map((i) => (
-              <img
-                key={i}
-                src={`https://i.pravatar.cc/150?u=lu${i}`}
-                alt="Learner"
-                className="avatar"
-              />
-            ))}
-            <div className="avatar-plus">+10M</div>
-          </div>
-        </div>
-
         <div className="brand-logos">
-          <p className="brand-title">Alumni working at top tech giants</p>
-          <div className="logo-slider">
-            <div className="logo-track">
-              {[...brands, ...brands].map((brand, index) => (
-                <div key={index} className="logo-item">
-                  <span className="brand-name">{brand}</span>
-                </div>
-              ))}
-            </div>
+
+          {/* Row 1: Scrolling Left */}
+          <div className="logo-track scroll-left">
+            {[...row1Brands, ...row1Brands, ...row1Brands, ...row1Brands].map((brand, index) => (
+              <div key={`row1-${index}`} className="logo-item">
+                <img src={brand.logo} alt={brand.name} className="brand-logo" />
+              </div>
+            ))}
           </div>
+
+          {/* Row 2: Scrolling Right */}
+          <div className="logo-track scroll-right">
+            {[...row2Brands, ...row2Brands, ...row2Brands, ...row2Brands].map((brand, index) => (
+              <div key={`row2-${index}`} className="logo-item">
+                <img src={brand.logo} alt={brand.name} className="brand-logo" />
+              </div>
+            ))}
+          </div>
+
         </div>
       </div>
 
       <style jsx>{`
         .social-proof-section {
-          padding: 80px 0;
+          padding: 40px 0;
           background: #fff;
           border-bottom: 1px solid #eee;
+          overflow: hidden;
         }
         .container {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 60px;
-        }
-        .stats-container {
-          text-align: center;
-        }
-        .text-orange {
-          color: var(--primary);
-          font-weight: 800;
-        }
-        .avatar-group {
-          display: flex;
-          justify-content: center;
-          margin-top: 24px;
-        }
-        .avatar {
-          width: 56px;
-          height: 56px;
-          border-radius: 50%;
-          border: 4px solid white;
-          margin-left: -16px;
-          box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-        .avatar:first-child {
-          margin-left: 0;
-        }
-        .avatar-plus {
-          width: 56px;
-          height: 56px;
-          border-radius: 50%;
-          background: var(--black);
-          color: white;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-weight: 800;
-          font-size: 0.85rem;
-          border: 4px solid white;
-          margin-left: -16px;
-        }
-        .stats-text {
-          font-weight: 700;
-          color: #111;
-          font-size: 1.5rem;
-          font-family: var(--font-outfit);
+          width: 100%;
+          max-width: 100%;
+          padding: 0;
+          overflow: hidden;
         }
         .brand-logos {
           width: 100%;
-          text-align: center;
-        }
-        .brand-title {
-          font-size: 0.95rem;
-          color: #999;
-          text-transform: uppercase;
-          letter-spacing: 3px;
-          margin-bottom: 40px;
-          font-weight: 700;
-        }
-        .logo-slider {
+          display: flex;
+          flex-direction: column;
+          gap: 20px;
           overflow: hidden;
-          width: 100%;
           position: relative;
+        }
+        .brand-logos::before,
+        .brand-logos::after {
+          content: "";
+          position: absolute;
+          top: 0;
+          width: 100px;
+          height: 100%;
+          z-index: 2;
+          pointer-events: none;
+        }
+        .brand-logos::before {
+          left: 0;
+          background: linear-gradient(to right, white, transparent);
+        }
+        .brand-logos::after {
+          right: 0;
+          background: linear-gradient(to left, white, transparent);
         }
         .logo-track {
           display: flex;
-          gap: 120px;
+          gap: 80px;
           width: max-content;
-          animation: slide 40s linear infinite;
-          padding: 20px 0;
+          padding: 10px 0;
         }
+        .logo-track:hover {
+          animation-play-state: paused;
+        }
+        
+        .scroll-left {
+          animation: scrollLeft 30s linear infinite;
+        }
+        .scroll-right {
+          animation: scrollRight 30s linear infinite;
+        }
+
         .logo-item {
           display: flex;
           align-items: center;
           justify-content: center;
+          width: 200px;
+          height: 90px;
+          flex-shrink: 0;
         }
-        .brand-name {
-          font-size: 2rem;
-          font-weight: 900;
-          color: #eee;
-          filter: grayscale(1);
-          opacity: 0.5;
-          transition: all 0.3s ease;
-          white-space: nowrap;
-        }
-        .logo-item:hover .brand-name {
-          filter: grayscale(0);
+        .brand-logo {
+          max-width: 100%;
+          max-height: 100%;
+          object-fit: contain;
+          filter: none;
           opacity: 1;
-          color: var(--primary);
+          transition: transform 0.3s ease;
+        }
+        .logo-item:hover .brand-logo {
           transform: scale(1.1);
         }
-        @keyframes slide {
+
+        @keyframes scrollLeft {
           0% { transform: translateX(0); }
           100% { transform: translateX(-50%); } 
+        }
+        @keyframes scrollRight {
+          0% { transform: translateX(-50%); } 
+          100% { transform: translateX(0); }
+        }
+
+        @media (max-width: 768px) {
+          .logo-track {
+            gap: 40px;
+          }
+          .scroll-left {
+            animation: scrollLeft 20s linear infinite;
+          }
+          .scroll-right {
+            animation: scrollRight 20s linear infinite;
+          }
+          .logo-item {
+            width: 140px;
+            height: 70px;
+          }
         }
       `}</style>
     </section>

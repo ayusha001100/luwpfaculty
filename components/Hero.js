@@ -400,7 +400,7 @@ function Hero({ onFormSubmit }) {
               <div className={styles.enquireForm} id="enquire-form">
                 <div className={styles.formHeader}>
                   <h3>{formTitle}</h3>
-                  <p>India's best GENAI program.</p>
+                  <p>The Generative AI Masterclass</p>
                 </div>
                 {isFormSubmitted ? (
                   <div className={styles.formBody} style={{ textAlign: 'center' }}>

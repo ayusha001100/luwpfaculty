@@ -1,6 +1,7 @@
 'use client';
-import { motion } from 'framer-motion';
-import { Plus, User } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useEffect } from 'react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 export default function Mentor() {
   const mentors = [
@@ -11,9 +12,36 @@ export default function Mentor() {
     { id: 5, image: '/images/mentors/mentor-5.jpeg' },
     { id: 6, image: '/images/mentors/mentor-6.jpeg' },
     { id: 7, image: '/images/mentors/mentor-7.jpeg' },
-    { id: 8, image: '/images/mentors/mentor-8.jpeg' }, // Filler
-    { id: 9, image: '/images/mentors/mentor-9.jpeg' }, // Filler
+    { id: 8, image: '/images/mentors/mentor-8.jpeg' },
+    { id: 9, image: '/images/mentors/mentor-9.jpeg' },
   ];
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [direction, setDirection] = useState(1);
+
+  // Auto-advance slider every 3 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setDirection(1);
+      setCurrentIndex((prev) => (prev + 1) % mentors.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [mentors.length]);
+
+  const nextSlide = () => {
+    setDirection(1);
+    setCurrentIndex((prev) => (prev + 1) % mentors.length);
+  };
+
+  const prevSlide = () => {
+    setDirection(-1);
+    setCurrentIndex((prev) => (prev - 1 + mentors.length) % mentors.length);
+  };
+
+  const goToSlide = (index) => {
+    setDirection(index > currentIndex ? 1 : -1);
+    setCurrentIndex(index);
+  };
 
   return (
     <section className="mentor-section section-padding">
@@ -25,18 +53,40 @@ export default function Mentor() {
             viewport={{ once: false }}
             className="mentor-image-container"
           >
-            <div className="mentor-placeholders-grid">
-              {mentors.map((mentor) => (
-                <div key={mentor.id} className="mentor-placeholder">
-                  <div className="placeholder-avatar">
-                    {mentor.image ? (
-                      <img src={mentor.image} alt="Mentor" className="avatar-img" />
-                    ) : (
-                      <User size={32} className="avatar-icon" />
-                    )}
+            <div className="mentor-slider-box">
+              <AnimatePresence mode="popLayout" initial={false} custom={direction}>
+                <motion.div
+                  key={currentIndex}
+                  custom={direction}
+                  initial={{ x: direction > 0 ? '100%' : '-100%', opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  exit={{ x: direction > 0 ? '-100%' : '100%', opacity: 0 }}
+                  transition={{
+                    type: "spring",
+                    stiffness: 300,
+                    damping: 30,
+                    opacity: { duration: 0.2 }
+                  }}
+                  className="mentor-slide"
+                >
+                  <div className="mentor-image-wrapper">
+                    <img
+                      src={mentors[currentIndex].image}
+                      alt={`Mentor ${currentIndex + 1}`}
+                      className="mentor-img"
+                    />
                   </div>
-                </div>
-              ))}
+                </motion.div>
+              </AnimatePresence>
+
+              {/* Navigation Arrows */}
+              <button className="nav-btn prev-btn" onClick={prevSlide} aria-label="Previous">
+                <ChevronLeft size={24} />
+              </button>
+              <button className="nav-btn next-btn" onClick={nextSlide} aria-label="Next">
+                <ChevronRight size={24} />
+              </button>
+
               <div className="experience-badge">Top 1% Mentors</div>
             </div>
           </motion.div>
@@ -63,25 +113,20 @@ export default function Mentor() {
               </div>
             </div>
 
-            <div className="mentor-trust">
-              <span className="trust-label">Our mentors come from:</span>
-              <div className="brand-grid">
-                <div className="brand-item"><img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google" className="brand-logo" /></div>
-                <div className="brand-item"><img src="https://cdn.simpleicons.org/meta" alt="Meta" className="brand-logo" /></div>
-                <div className="brand-item"><img src="https://upload.wikimedia.org/wikipedia/commons/9/96/Microsoft_logo_%282012%29.svg" alt="Microsoft" className="brand-logo" /></div>
-                <div className="brand-item"><img src="https://cdn.simpleicons.org/netflix" alt="Netflix" className="brand-logo" /></div>
-                <div className="brand-item"><img src="https://cdn.simpleicons.org/airbnb" alt="Airbnb" className="brand-logo" /></div>
-                <div className="more-indicator">+ 100 More</div>
-              </div>
-            </div>
           </div>
         </div>
-      </div>
 
+      </div>
       <style jsx>{`
         .mentor-section {
           background-color: white;
           overflow: hidden;
+          padding: 80px 0;
+        }
+        .container {
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 0 20px;
         }
         .mentor-layout {
           display: grid;
@@ -89,66 +134,87 @@ export default function Mentor() {
           gap: 100px;
           align-items: center;
         }
-        .mentor-placeholders-grid {
+        .mentor-slider-box {
           position: relative;
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 20px;
           background: #f8fafc;
-          padding: 40px;
+          padding: 0;
           border-radius: 40px;
           border: 1px solid #e2e8f0;
           box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
-        }
-        .mentor-placeholder {
-          aspect-ratio: 1/1;
-          background: white;
-          border-radius: 24px;
-          border: 1px solid #edf2f7;
-          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-          transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+          height: 500px;
           overflow: hidden;
-          cursor: pointer;
+          width: 100%;
+          transition: all 0.4s ease;
         }
-        .mentor-placeholder:hover {
-          transform: translateY(-8px) scale(1.05);
-          box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        .mentor-slider-box:hover {
+          box-shadow: 0 20px 50px rgba(255, 204, 0, 0.3), 0 10px 20px rgba(0,0,0,0.1);
+          transform: translateY(-5px);
           border-color: var(--primary);
         }
-        .placeholder-avatar {
+        .mentor-slide {
           width: 100%;
           height: 100%;
-          background: #f1f5f9;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          color: #94a3b8;
+          position: absolute;
+          top: 0;
+          left: 0;
+        }
+        .mentor-image-wrapper {
+          width: 100%;
+          height: 100%;
+          border-radius: 0;
           overflow: hidden;
         }
-        .avatar-img {
+        .mentor-img {
           width: 100%;
           height: 100%;
           object-fit: cover;
-          transition: transform 0.5s ease;
+          object-position: top center;
         }
-        .mentor-placeholder:hover .avatar-img {
-          transform: scale(1.1);
+        .nav-btn {
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          background: rgba(255, 255, 255, 0.9);
+          border: none;
+          color: #111;
+          width: 48px;
+          height: 48px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          z-index: 10;
+          backdrop-filter: blur(4px);
+          transition: all 0.3s ease;
+          opacity: 1;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
-        .skeleton-line.short {
-          width: 60%;
+        .prev-btn {
+          left: 20px;
+        }
+        .next-btn {
+          right: 20px;
+        }
+        .nav-btn:hover {
+          background: var(--primary);
+          color: black;
+          transform: translateY(-50%) scale(1.1);
+          box-shadow: 0 8px 20px rgba(0,0,0,0.2);
         }
         .experience-badge {
           position: absolute;
-          bottom: -20px;
-          left: 50%;
-          transform: translateX(-50%);
+          bottom: 30px;
+          right: 30px;
+          left: auto;
+          transform: none;
           background: var(--primary);
           color: #000;
-          padding: 12px 24px;
+          padding: 10px 20px;
           border-radius: 100px;
           font-weight: 800;
-          font-size: 0.9rem;
-          box-shadow: 0 10px 20px rgba(255, 204, 0, 0.4);
+          font-size: 0.8rem;
+          box-shadow: 0 10px 20px rgba(0,0,0,0.2);
           z-index: 2;
           white-space: nowrap;
         }
@@ -201,49 +267,6 @@ export default function Mentor() {
           font-size: 1rem;
           font-weight: 600;
         }
-        .mentor-trust {
-          margin-top: 20px;
-        }
-        .trust-label {
-          font-size: 0.85rem;
-          color: #94A3B8;
-          font-weight: 700;
-          text-transform: uppercase;
-          letter-spacing: 0.1em;
-          margin-bottom: 24px;
-          display: block;
-        }
-        .brand-grid {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 24px 32px;
-          align-items: center;
-        }
-        .brand-item {
-          display: flex;
-          align-items: center;
-          height: 32px;
-        }
-        .brand-logo {
-          height: 100%;
-          width: auto;
-          max-width: 100px;
-          opacity: 1;
-          filter: none;
-          transition: all 0.3s ease;
-        }
-        .brand-logo:hover {
-          transform: translateY(-2px);
-          filter: brightness(1.1);
-        }
-        .more-indicator {
-          font-size: 0.9rem;
-          font-weight: 700;
-          color: #64748B;
-          opacity: 0.7;
-          white-space: nowrap;
-          margin-left: 8px;
-        }
         @media (max-width: 992px) {
           .mentor-layout {
             grid-template-columns: 1fr;
@@ -252,9 +275,21 @@ export default function Mentor() {
           h2 {
             font-size: 3rem;
           }
+          .mentor-slider-box {
+            height: 450px;
+          }
           .mentor-image-wrapper {
-            max-width: 600px;
-            margin: 0 auto;
+             max-width: none;
+             height: 100%;
+          }
+        }
+        @media (max-width: 576px) {
+          .mentor-slider-box {
+            height: 400px;
+          }
+          .experience-badge {
+            bottom: 20px;
+            right: 20px;
           }
         }
       `}</style>
